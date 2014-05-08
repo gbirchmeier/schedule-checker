@@ -8,7 +8,6 @@ module ScheduleChecker
     end
   
     def in_session?(t) #t is a timestamp or Timepoint
-
       if startpoint.gt(endpoint)
         return startpoint.lte(t) || endpoint.gt(t)
       end
