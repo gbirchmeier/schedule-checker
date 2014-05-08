@@ -1,4 +1,4 @@
-module SessionWindows
+module ScheduleChecker
   class Session
     attr_reader :startpoint,:endpoint
   

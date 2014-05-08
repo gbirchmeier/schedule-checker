@@ -1,4 +1,4 @@
-module SessionWindows
+module ScheduleChecker
   class Timepoint
     attr_reader :normalized_ts
   
@@ -21,19 +21,19 @@ module SessionWindows
   
     def lte(t)
       #only cares about wday and time
-      x = t.is_a?(SessionWindows::Timepoint) ? t.normalized_ts : SessionWindows::Timepoint.normalize_timestamp(t)
+      x = t.is_a?(ScheduleChecker::Timepoint) ? t.normalized_ts : ScheduleChecker::Timepoint.normalize_timestamp(t)
       self.normalized_ts <= x
     end
   
     def gt(t)
       #only cares about wday and time
-      x = t.is_a?(SessionWindows::Timepoint) ? t.normalized_ts : SessionWindows::Timepoint.normalize_timestamp(t)
+      x = t.is_a?(ScheduleChecker::Timepoint) ? t.normalized_ts : ScheduleChecker::Timepoint.normalize_timestamp(t)
       self.normalized_ts > x
     end
 
     def self.normalize_timestamp(ts)
       x = ts.getutc
-      SessionWindows::Timepoint.new(x.wday,x.hour,x.min,x.sec).normalized_ts
+      ScheduleChecker::Timepoint.new(x.wday,x.hour,x.min,x.sec).normalized_ts
     end
   
     def self.pretty_day(n)
@@ -51,7 +51,7 @@ module SessionWindows
   
   private
     def wday_abbrev
-      SessionWindows::Timepoint.pretty_day(@normalized_ts.wday)
+      ScheduleChecker::Timepoint.pretty_day(@normalized_ts.wday)
     end
   
   end

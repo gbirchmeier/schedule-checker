@@ -1,13 +1,13 @@
-require 'session-windows'
+require 'schedule-checker'
 
-describe SessionWindows do
+describe ScheduleChecker do
 
   it "has a dummy test that always passes" do
     1.should eq(1)
   end
 
   it "#onehundred" do
-    SessionWindows.onehundred.should eq(100)
+    ScheduleChecker.onehundred.should eq(100)
   end
 
 end

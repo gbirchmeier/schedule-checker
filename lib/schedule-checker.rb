@@ -1,6 +1,6 @@
-module SessionWindows
+module ScheduleChecker
   def self.hi
-    puts "hi from SessionWindows gem"
+    puts "hi from ScheduleChecker gem"
   end
 
   def self.onehundred
