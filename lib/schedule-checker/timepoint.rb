@@ -11,6 +11,14 @@ module ScheduleChecker
         Time.local(2012,1,day+1,hour,minute,second).getutc
     end
 
+    def self.from_string(s,is_utc=true)
+      raise "bad format '#{s}'" unless s.match(/^\w\w\w[\w]*\/\d\d:\d\d:\d\d$/)
+      day_str,time_str = s.split("/")
+      day = ScheduleChecker::Timepoint.day_str_to_i(day_str)
+      h,m,s = time_str.split(":")
+      ScheduleChecker::Timepoint.new(day,h.to_i,m.to_i,s.to_i,is_utc)
+    end
+
     def normalized_ts_as_local
       @normalized_ts.get_local
     end
@@ -36,19 +44,19 @@ module ScheduleChecker
       ScheduleChecker::Timepoint.new(x.wday,x.hour,x.min,x.sec).normalized_ts
     end
   
+    DAYS = ["sun","mon","tue","wed","thu","fri","sat"]
     def self.pretty_day(n)
-      case n
-        when 0 then "Sun"
-        when 1 then "Mon"
-        when 2 then "Tue"
-        when 3 then "Wed"
-        when 4 then "Thu"
-        when 5 then "Fri"
-        when 6 then "Sat"
-        else raise "Illegal day value"
-      end
+      raise "Illegal day int '#{n}'" unless (0..6).to_a.include?(n)
+      DAYS[n].capitalize
     end
   
+    def self.day_str_to_i(str)
+      d = str.downcase.slice(0,3)
+      rv = DAYS.find_index(d)
+      raise "Illegal day string '#{str}'" unless rv
+      rv
+    end
+
   private
     def wday_abbrev
       ScheduleChecker::Timepoint.pretty_day(@normalized_ts.wday)

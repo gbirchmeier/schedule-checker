@@ -2,10 +2,15 @@ require 'schedule-checker/timepoint'
 
 describe ScheduleChecker::Timepoint do
 
-  it "#pretty_day class method" do
+  it "::pretty_day" do
     ScheduleChecker::Timepoint.pretty_day(0).should eq "Sun"
     ScheduleChecker::Timepoint.pretty_day(5).should eq "Fri"
     expect {ScheduleChecker::Timepoint.pretty_day(7)}.to raise_error
+  end
+
+  it "::day_str_to_i" do
+    ScheduleChecker::Timepoint.day_str_to_i("tUe").should eq 2
+    expect {ScheduleChecker::Timepoint.day_str_to_i("pants")}.to raise_error
   end
 
   it "ctor and #to_s" do
@@ -13,7 +18,12 @@ describe ScheduleChecker::Timepoint do
     ScheduleChecker::Timepoint.new(0,12,1,1,true).to_s.should eq "Sun/12:01:01"
 
     # two possible answers depending on DST.  (Assumes running in Central time zone)
-    expect(["Sun/17:01:01","Sun/18:01:01"]).to include ScheduleChecker::Timepoint.new(0,12,1,1,false).to_s
+    ScheduleChecker::Timepoint.new(0,12,1,1,false).to_s.should match(/^Sun\/1[78]:01:01$/)
+  end
+
+  it "::from_string" do
+    ScheduleChecker::Timepoint.from_string("mOn/12:12:12").to_s.should eq "Mon/12:12:12"
+    ScheduleChecker::Timepoint.from_string("Tuesd/12:12:12").to_s.should eq "Tue/12:12:12"
   end
 
   it "#lte" do

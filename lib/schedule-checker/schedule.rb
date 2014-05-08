@@ -1,4 +1,5 @@
 require 'schedule-checker/session'
+require 'schedule-checker/parser'
 
 module ScheduleChecker
   class Schedule
@@ -6,6 +7,11 @@ module ScheduleChecker
   
     def initialize()
       @sessions = [] # Session objects
+    end
+
+    def self.from_string(s)
+      parser = ScheduleChecker::Parser.new(s)
+      parser.to_schedule
     end
   
     def add_session(start_timepoint,end_timepoint)
