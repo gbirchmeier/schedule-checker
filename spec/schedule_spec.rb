@@ -53,40 +53,7 @@ END
     sched.sessions[0].to_s.should match(/^Session:Tue\/1[78]:12:34-Tue\/2[01]:01:01/)
   end
 
-  it "#from_string error, two timezones" do
-    filecontent = <<END
-timezone: local
-timezone: local
-session: Mon/08:12:34-Tue/12:12:12
-END
-    expect { ScheduleChecker::Schedule.from_string(filecontent) }.to raise_error
-  end
 
-
-  it "#from_string error, illegal timezone setting" do
-    filecontent = <<END
-timezone: error
-session: Tue/08:12:34
-END
-    expect { ScheduleChecker::Schedule.from_string(filecontent) }.to raise_error
-  end
-
-
-  it "#from_string error, unknown setting" do
-    filecontent = <<END
-bat: man
-session: Tue/08:12:34
-END
-    expect { ScheduleChecker::Schedule.from_string(filecontent) }.to raise_error
-  end
-
-
-  it "#from_string error, malformed session" do
-    filecontent = <<END
-session: Mon/08:12:34
-END
-    expect { ScheduleChecker::Schedule.from_string(filecontent) }.to raise_error
-  end
 
 
 
