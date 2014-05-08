@@ -37,4 +37,12 @@ describe SessionWindows::Timepoint do
     tp.gt(Time.utc(2014,5,7,12,00,00)).should be_false
     tp.gt(Time.utc(2014,5,7,12,00,01)).should be_false
   end
+
+  it "#lte with non-UTC timestamps" do
+    tp = SessionWindows::Timepoint.new(3,12,00,00)
+    tp.lte(Time.new(2014,5,7,13,59,59,"+02:00")).should be_false
+    tp.lte(Time.new(2014,5,7,14,00,00,"+02:00")).should be_true
+    tp.lte(Time.new(2014,5,7,14,00,01,"+02:00")).should be_true
+  end
+
 end
