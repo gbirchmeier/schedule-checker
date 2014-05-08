@@ -6,7 +6,14 @@ Gem::Specification.new do |s|
 #  s.description = "TBA"
   s.authors     = ["Grant Birchmeier"]
   s.email       = 'grant@grantb.net'
-  s.files       = ["lib/schedule-checker.rb"]
+  s.files       = [
+                    "lib/schedule-checker.rb",
+                    "/lib/schedule-checker/parser.rb",
+                    "/lib/schedule-checker/schedule.rb",
+                    "/lib/schedule-checker/session.rb",
+                    "/lib/schedule-checker/timepoint.rb",
+                    "/lib/schedule-checker.rb",
+                  ]
   s.homepage    = 'http://github.com/gbirchmeier/schedule-checker'
   s.license     = 'MIT'
 end
