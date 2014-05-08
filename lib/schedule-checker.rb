@@ -1,10 +1,10 @@
-module ScheduleChecker
-  def self.hi
-    puts "hi from ScheduleChecker gem"
-  end
+require 'schedule-checker/schedule'
 
-  def self.onehundred
-    return 100
+module ScheduleChecker
+
+  def self.parse_schedule_file(filename)
+    str = File.read(filename)
+    ScheduleChecker::Schedule.from_string(str)
   end
 
 end
