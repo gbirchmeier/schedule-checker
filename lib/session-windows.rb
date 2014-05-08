@@ -1,5 +1,10 @@
-class SessionWindows
+module SessionWindows
   def self.hi
-    puts "SessionWindows gem"
+    puts "hi from SessionWindows gem"
   end
+
+  def self.onehundred
+    return 100
+  end
+
 end

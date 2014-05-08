@@ -6,4 +6,8 @@ describe SessionWindows do
     1.should eq(1)
   end
 
+  it "#onehundred" do
+    SessionWindows.onehundred.should eq(100)
+  end
+
 end
