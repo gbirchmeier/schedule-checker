@@ -1,7 +1,7 @@
-require 'session'
+require 'schedule-checker/session'
 
 module ScheduleChecker
-  class SessionSchedule
+  class Schedule
     attr_reader :sessions
   
     def initialize()

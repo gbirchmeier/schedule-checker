@@ -1,4 +1,4 @@
-require 'timepoint'
+require 'schedule-checker/timepoint'
 
 describe ScheduleChecker::Timepoint do
 

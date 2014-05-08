@@ -1,5 +1,5 @@
-require 'session'
-require 'timepoint'
+require 'schedule-checker/session'
+require 'schedule-checker/timepoint'
 
 describe ScheduleChecker::Session do
 
