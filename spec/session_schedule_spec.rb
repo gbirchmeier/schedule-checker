@@ -3,6 +3,14 @@ require 'timepoint'
 
 describe ScheduleChecker::SessionSchedule do
 
+  it "rejects adding sessions that overlap with prior sessions" do
+    sched = ScheduleChecker::SessionSchedule.new
+    sched.add_session(ScheduleChecker::Timepoint.new(2,8,00,00),ScheduleChecker::Timepoint.new(2,17,0,0))
+    expect {
+      sched.add_session(ScheduleChecker::Timepoint.new(2,16,45,00),ScheduleChecker::Timepoint.new(2,21,0,0))
+    }.to raise_error
+  end
+
   it "#in_a_session?" do
     sched = ScheduleChecker::SessionSchedule.new
     # set up 2 sessions: Tue and Thur from 8am-5pm UTC
