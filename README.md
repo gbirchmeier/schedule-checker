@@ -24,10 +24,10 @@ Here's an example schedule file that sets 8am-5pm sessions every day except for 
     # You can also specify full-length day names if you like (e.g. "Friday/08:00:00")
 
 
-How to load that file:
+How to load and use that file:
 ---
 
     require 'schedule-checker'
     schedule = ScheduleChecker.parse_schedule_file(filename)
 
-    schedule.in_a_session?(Time.now)
+    schedule.in_a_session?(Time.now)   #utc or local times both work
