@@ -7,7 +7,7 @@ A simple file format and module for specifying a weekly schedule of sessions and
 Session definition file:
 ---------
 
-An example:
+An example schedule file:
 
     # Timezone specifies if the sessions are specified in UTC or local.
     # => valid values: "utc" or "local"
