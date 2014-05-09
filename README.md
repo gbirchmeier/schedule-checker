@@ -10,8 +10,8 @@ Session definition file:
 An example:
 
     # Timezone specifies if the sessions are specified in UTC or local.
-    # * valid values: "utc" or "local"
-    # * If not present, then "utc".
+    # => valid values: "utc" or "local"
+    # => If not present, then "utc".
     timezone: utc
     # Define as many weekly sessions as you want.  Times are 24-hour time.
     # Overlapping sessions are invalid and will raise an error.
@@ -21,7 +21,7 @@ An example:
     session: Wed/08:00:00-Wed/17:00:00
     session: Thu/08:00:00-Thu/17:00:00
     session: Fri/08:00:00-Fri/14:00:00
-    # You can also specify full-length day names if you want (e.g. "Friday/08:00:00")
+    # You can also specify full-length day names if you like (e.g. "Friday/08:00:00")
 
 
 How to load that file:
