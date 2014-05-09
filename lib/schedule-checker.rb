@@ -7,4 +7,8 @@ module ScheduleChecker
     ScheduleChecker::Schedule.from_string(str)
   end
 
+  def self.nonstop_schedule
+    ScheduleChecker::Schedule.nonstop
+  end
+
 end
