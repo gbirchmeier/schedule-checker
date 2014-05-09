@@ -1,4 +1,6 @@
 require 'schedule-checker/schedule'
+require 'schedule-checker/session'
+require 'schedule-checker/timepoint'
 
 module ScheduleChecker
 

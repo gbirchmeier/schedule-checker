@@ -1,5 +1,5 @@
-require 'schedule-checker/session'
 require 'schedule-checker/parser'
+require 'schedule-checker/session'
 
 module ScheduleChecker
   class Schedule
