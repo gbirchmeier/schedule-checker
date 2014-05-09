@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'schedule-checker'
-  s.version     = '0.0.1'
-  s.date        = '2014-04-28'
+  s.version     = '0.0.2'
+  s.date        = '2014-05-09'
   s.summary     = "A simple file format and module for specifying a weekly schedule of sessions and checking if a given time is within a session or not."
 #  s.description = "TBA"
   s.authors     = ["Grant Birchmeier"]
