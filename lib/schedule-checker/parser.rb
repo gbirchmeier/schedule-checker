@@ -10,6 +10,7 @@ module ScheduleChecker
       @is_utc = true
       @session_string_pairs = []
       @found_timezone = false
+      @nonstop = false
 
       s.split("\n").each{|l|
         line = l.strip
@@ -28,9 +29,13 @@ module ScheduleChecker
             raise "unrecognized setting: #{type}"
         end
       }
+
+      raise "invalid config: can't be nonstop and still have timed sessions" if @nonstop and @session_string_pairs.count>0
     end
 
     def to_schedule
+      return ScheduleChecker::Schedule.nonstop if @nonstop
+
       sched = ScheduleChecker::Schedule.new
       @session_string_pairs.each{|pair|
         starttp = ScheduleChecker::Timepoint.from_string(pair[0],@is_utc)
@@ -56,6 +61,10 @@ private
     end
 
     def parse_session(s)
+      if s.match(/non-?stop/)
+        @nonstop = true
+        return
+      end
       raise "malformed session value: #{s}" unless s.include?("-")
       starttime,endtime = s.split("-",2)
       raise "malformed session value: #{s}" if starttime.nil? or endtime.nil?

@@ -26,6 +26,19 @@ describe ScheduleChecker::Schedule do
   end
 
 
+  it "#in_a_schedule is always true for nonstop schedules" do
+    sched = ScheduleChecker::Schedule.nonstop
+    sched.in_a_session?("pants").should be_true
+  end
+
+  it "can't add a session to a nonstop" do
+    sched = ScheduleChecker::Schedule.nonstop
+    expect {
+      sched.add_session(ScheduleChecker::Timepoint.new(2,16,45,00),ScheduleChecker::Timepoint.new(2,21,0,0))
+    }.to raise_error
+  end
+
+
   it "#from_string with utc" do
     filecontent = <<END
 # some comment
@@ -43,7 +56,6 @@ END
 
   it "#from_string with local" do
     filecontent = <<END
-# some comment
 TIMEZONE: local
 SESSION: Tue/12:12:34-Tue/15:01:01
 END
@@ -54,10 +66,23 @@ END
   end
 
 
+  it "#from_string non-stop" do
+    filecontent = <<END
+SESSION: nonstop
+END
+    sched = ScheduleChecker::Schedule.from_string(filecontent)
+    sched.nonstop.should be_true
+    sched.sessions.count.should eq 0
+  end
 
 
-
-
-
+  it "#from_string empty schedule has no sessions" do
+    filecontent = <<END
+# I got nothing
+END
+    sched = ScheduleChecker::Schedule.from_string(filecontent)
+    sched.nonstop.should be_false
+    sched.sessions.count.should eq 0
+  end
 
 end

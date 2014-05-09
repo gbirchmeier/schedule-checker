@@ -36,4 +36,13 @@ END
     expect { ScheduleChecker::Parser.new(filecontent) }.to raise_error
   end
 
+
+  it "#from_string nonstop can't coexist with a timed session" do
+    filecontent = <<END
+SESSION: Tue/12:12:34-Tue/15:01:01
+SESSION: non-stop
+END
+    expect {sched = ScheduleChecker::Parser.new(filecontent)}.to raise_error
+  end
+
 end

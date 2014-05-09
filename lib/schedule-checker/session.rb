@@ -6,7 +6,7 @@ module ScheduleChecker
       @startpoint = startpoint
       @endpoint = endpoint
     end
-  
+
     def in_session?(t) #t is a timestamp or Timepoint
       if startpoint.gt(endpoint)
         return startpoint.lte(t) || endpoint.gt(t)
@@ -17,6 +17,5 @@ module ScheduleChecker
     def to_s
       "Session:#{startpoint.to_s}-#{endpoint.to_s}"
     end
-  
   end
 end
