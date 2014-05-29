@@ -4,7 +4,7 @@ module ScheduleChecker
 
   def self.parse_schedule_file(filename)
     str = File.read(filename)
-    ScheduleChecker::Schedule.from_string(str)
+    ScheduleChecker::Parser.new(str).schedule
   end
 
   def self.nonstop_schedule

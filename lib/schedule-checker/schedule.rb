@@ -14,18 +14,13 @@ module ScheduleChecker
       ScheduleChecker::Schedule.new(true)
     end
 
-    def self.from_string(s)
-      parser = ScheduleChecker::Parser.new(s)
-      parser.to_schedule
-    end
-  
-    def add_session(start_timepoint,end_timepoint)
+    def add_session(session)
       raise "can't add to a non-stop schedule" if @nonstop
 
-      if self.in_a_session?(start_timepoint) || self.in_a_session?(end_timepoint)
+      if self.in_a_session?(session.startpoint) || self.in_a_session?(session.endpoint)
         raise "new session overlaps with existing session"
       end
-      @sessions << ScheduleChecker::Session.new(start_timepoint,end_timepoint)
+      @sessions << session
     end
   
     def in_a_session?(t) # t is a timestamp

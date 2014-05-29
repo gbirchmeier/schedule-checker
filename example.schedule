@@ -1,0 +1,15 @@
+# Timezone specifies if the sessions are specified in UTC or local.
+# => valid values: "utc" or "local"
+# => If not present, then "utc".
+timezone: utc
+
+# Define as many weekly sessions as you want.  Times are 24-hour time.
+# Overlapping sessions are invalid and will raise an error.
+# Sessions can span multiple days.
+sessions:
+- Mon/08:00:00-Mon/17:00:00
+- Tue/08:00:00-Tue/17:00:00
+- Wed/08:00:00-Wed/17:00:00
+- Thu/08:00:00-Thu/17:00:00
+- Fri/08:00:00-Fri/14:00:00
+# (You can also specify full-length day names if you like (e.g. "Friday/08:00:00"))
