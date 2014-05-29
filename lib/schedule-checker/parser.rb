@@ -1,77 +1,87 @@
 require 'schedule-checker/schedule'
 require 'schedule-checker/session'
 require 'schedule-checker/timepoint'
+require 'yaml'
 
 module ScheduleChecker
 
   class Parser
+    attr_reader :config, :schedule
+
+    ALLOWED_KEYS = ["sessions","timezone"]
 
     def initialize(s)
-      @is_utc = true
-      @session_string_pairs = []
-      @found_timezone = false
-      @nonstop = false
+      session_string_pairs = []
+      nonstop = false
 
-      s.split("\n").each{|l|
-        line = l.strip
-        next if line.start_with? "#"
+      @config = Parser.downcase_keys(YAML.load(s))
 
-        type,value = line.split(":",2)
-        raise "malformed line: \"#{l}\"" if value.nil? or value.strip.empty?
+      check_keys
 
-        value.strip!
-        case type.downcase
-          when "timezone"
-            parse_timezone(value)
-          when "session"
-            parse_session(value)
-          else
-            raise "unrecognized setting: #{type}"
+      is_utc = is_utc?
+
+      raise "no sessions specified" unless @config["sessions"] and @config["sessions"].length > 0
+
+      sessions = []
+      raise "sessions should be a list" unless @config["sessions"].is_a? Array
+
+      @config["sessions"].each do |session_string|
+        s = session_string.downcase.strip
+
+        #TODO - come back later and make this nonstop-session processing better
+        #  Should probably have non-stop be a property of Session, not Schedule, and 
+        #  rely on Schedule to check for timed/nonstop session conflicts.
+
+        if ["nonstop","non-stop"].include?(s)
+          raise "config can't simultaneously be non-stop and have scheduled sessions" if sessions.length>0
+          nonstop = true
+        else
+          raise "config can't simultaneously be non-stop and have scheduled sessions" if nonstop
+          sessions << Parser.parse_session(s,is_utc)
         end
-      }
-
-      raise "invalid config: can't be nonstop and still have timed sessions" if @nonstop and @session_string_pairs.count>0
+      end
+      
+      if(nonstop)
+        @schedule = ScheduleChecker::Schedule.nonstop
+      else
+        @schedule = ScheduleChecker::Schedule.new
+        sessions.each{|s| @schedule.add_session(s)}
+      end
     end
 
-    def to_schedule
-      return ScheduleChecker::Schedule.nonstop if @nonstop
-
-      sched = ScheduleChecker::Schedule.new
-      @session_string_pairs.each{|pair|
-        starttp = ScheduleChecker::Timepoint.from_string(pair[0],@is_utc)
-        endtp = ScheduleChecker::Timepoint.from_string(pair[1],@is_utc)
-        sched.add_session(starttp,endtp)
-      }
-      sched
+  private
+    def self.downcase_keys(h)
+      rv = {}
+      h.each{|k,v| rv[k.downcase] = v }
+      rv
     end
 
-private
-    def parse_timezone(s)
-      raise "timezone can only appear once" if @found_timezone
-      @found_timezone = true
-      s.downcase!
-      case s.downcase
+    def check_keys
+      @config.keys.each{|k| raise "unsupported setting '#{k}'" unless ALLOWED_KEYS.include?(k) }
+    end
+
+    def is_utc?
+      return true unless @config.has_key?("timezone")
+      case @config["timezone"].downcase
         when "utc"
-          @is_utc=true
+          true
         when "local"
-          @is_utc=false
+          return false
         else
           raise "unsupported timezone value: #{s}"
       end
     end
 
-    def parse_session(s)
-      if s.match(/non-?stop/)
-        @nonstop = true
-        return
-      end
+    def self.parse_session(s,is_utc)
       raise "malformed session value: #{s}" unless s.include?("-")
       starttime,endtime = s.split("-",2)
       raise "malformed session value: #{s}" if starttime.nil? or endtime.nil?
       starttime.strip!
       endtime.strip!
-      @session_string_pairs << [starttime,endtime]
+      ScheduleChecker::Session.new(
+        ScheduleChecker::Timepoint.from_string(starttime,is_utc),
+        ScheduleChecker::Timepoint.from_string(endtime,is_utc))
     end
-
   end
+
 end
