@@ -2,7 +2,7 @@ require 'rake/testtask'
 require 'rspec/core/rake_task'
 
 
-# I'm leaving this here for reference ven though I'm not going
+# I'm leaving this here for reference even though I'm not going
 # to use Test::Unit for this gem.
 # Use 'rake test' to run the dummy Test::Unit test.
 Rake::TestTask.new do |t|
